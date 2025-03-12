@@ -1,0 +1,25 @@
+# Archivos de texto
+* text=auto              # Asegura que los archivos de texto tengan consistencia de finales de línea
+
+# Archivos de scripts (sh y bat)
+*.sh text eol=lf         # Los scripts bash deben tener finales de línea LF
+*.bat text eol=crlf       # Los archivos de comandos de Windows deben tener CRLF
+
+# Archivos binarios (no deben ser procesados por Git en términos de fusión)
+*.jpg binary
+*.png binary
+*.zip binary
+*.exe binary
+
+# Archivos de configuración
+*.properties text eol=lf # Los archivos de configuración (por ejemplo, application.properties) suelen ser archivos de texto y deben tener LF
+
+# Archivos de Maven Wrapper
+/mvnw text eol=lf         # El script mvnw debe tener finales de línea LF (útil para sistemas Unix)
+
+# Archivos de comandos de Windows
+*.cmd text eol=crlf       # Los archivos .cmd deben tener CRLF (útil para Windows)
+
+# No fusionar ciertos archivos binarios
+*.png merge=union
+*.jpg merge=union
