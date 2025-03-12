@@ -1,12 +1,37 @@
-# React + Vite
+# Proyecto Frontend con React y Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es el proyecto frontend para la aplicación. A continuación se describen los pasos necesarios para configurar y ejecutar el entorno de desarrollo.
 
-Currently, two official plugins are available:
+## Prerrequisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Node.js** (versión LTS recomendada)  
+- **npm** (incluido con la instalación de Node.js)  
 
-## Expanding the ESLint configuration
+## Instalación
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Instala Node.js (si no lo tienes):**  
+   - Descarga e instala la versión LTS desde [https://nodejs.org/](https://nodejs.org/).  
+   - Esto también instalará `npm` (Node Package Manager), necesario para manejar las dependencias.  
+   - Verifica la instalación ejecutando los siguientes comandos en la terminal:  
+
+   ```bash
+   node -v   # Verifica la versión de Node.js
+   npm -v    # Verifica la versión de npm
+   ```
+
+2. **Instala las dependencias del proyecto:**  
+
+   ```bash
+   npm install
+   ```
+
+3. **Arranca el servidor de desarrollo:**  
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Abre el proyecto en el navegador:**  
+   Por defecto, Vite lo ejecutará en el puerto `5173`. Abre: [http://localhost:5173](http://localhost:5173)
+
+---
