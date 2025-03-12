@@ -74,3 +74,4 @@ Thumbs.db
 # Archivos comprimidos
 *.tar
 *.zip
+*package-lock.json
