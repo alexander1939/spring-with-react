@@ -11,8 +11,8 @@ public interface IUserService {
 
     Optional<UserEntity> findByEmail(String email);
 
-    Optional<UserEntity> findByIdTask(String idTask);
+    boolean existsByEmail(String email);
 
-    UserEntity save(UserEntity user);
+    UserEntity save(UserEntity userEntity);
 
 }

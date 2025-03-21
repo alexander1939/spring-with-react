@@ -1,13 +1,15 @@
 package com.softhugordc.taskmanagerappv1.controller.handler;
 
-import com.softhugordc.taskmanagerappv1.dto.error.ErrorDTO;
+import com.softhugordc.taskmanagerappv1.dto.response.ErrorResponseDTO;
 import com.softhugordc.taskmanagerappv1.exception.DatabaseOperationException;
+import com.softhugordc.taskmanagerappv1.exception.DuplicateUserException;
 import com.softhugordc.taskmanagerappv1.exception.TaskNotFoundException;
 import com.softhugordc.taskmanagerappv1.exception.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,80 +24,98 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    //Captura de excepcion por erro de acceso a la base de datos
+    //Captura de excepcion por error de acceso a la base de datos
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<?> handleDataAccessException(DataAccessException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message("Ocurrio un error al intentar acceder a la base de datos ".concat(e.getMessage()))
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(String.format("Ocurrio un error al intentar acceder a la base de datos, %s", e.getMessage()))
                 .build();
-        return new ResponseEntity<>(responseErrorDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //Captura de excepcion por error de conexion a la base de datos
     @ExceptionHandler(ConnectException.class)
     public ResponseEntity<?> handleDatabaseConnectionException(ConnectException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message("Ocurrio un error de conexion a la base de datos ".concat(e.getMessage()))
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(String.format("Ocurrio un error de conexion con la base de datos, %s", e.getMessage()))
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseErrorDTO);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDTO);
     }
 
     //Captura de excepcion por un error general
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGenericException(Exception e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message("Ocurrio un error inesperado: ".concat(e.getMessage()))
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(String.format("Ocurrio un error inesperado, %s", e.getMessage()))
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseErrorDTO);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDTO);
     }
 
     //Captura de excepcion por error con la base de datos
     @ExceptionHandler(DatabaseOperationException.class)
     public ResponseEntity<?> handleDatabaseOperationException(DatabaseOperationException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message(e.getMessage())
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseErrorDTO);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponseDTO);
+    }
+
+    //Captura de excepcion por error de usuario no autenticado (current user)
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<?> handleAuthenticationCredentialsNotFoundException(AuthenticationCredentialsNotFoundException e) {
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponseDTO);
     }
 
     //Captura de excepcion por validaciones de entidades y dtos
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
-        List<ErrorDTO> errorDTOS = e.getBindingResult()
+        List<ErrorResponseDTO> errorResponsDTOS = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> new ErrorDTO(fieldError.getDefaultMessage()))
+                .map(fieldError -> new ErrorResponseDTO(fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
         Map<String, Object> responseErrorDTO = new HashMap<>();
-        responseErrorDTO.put("errors", errorDTOS);
+        responseErrorDTO.put("errors", errorResponsDTOS);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseErrorDTO);
     }
 
     //Captura de excepcion por validacion de parametros de url
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message(e.getMessage())
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseErrorDTO);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseDTO);
     }
 
     //Captura de excepcion por tarea no encontrado
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<?> handleTaskNotFoundException(TaskNotFoundException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message(e.getMessage())
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
                 .build();
-        return ResponseEntity.status(e.getStatus()).body(responseErrorDTO);
+        return ResponseEntity.status(e.getHttpStatus()).body(errorResponseDTO);
     }
 
     //Captura de excepcion por usuario no encontrado
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e) {
-        ErrorDTO responseErrorDTO = ErrorDTO.builder()
-                .message(e.getMessage())
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
                 .build();
-        return ResponseEntity.status(e.getStatus()).body(responseErrorDTO);
+        return ResponseEntity.status(e.getHttpStatus()).body(errorResponseDTO);
+    }
+
+    //Captura de excepcion por usuario duplicado
+    @ExceptionHandler(DuplicateUserException.class)
+    public ResponseEntity<?> handleDuplicateUserException(DuplicateUserException e) {
+        ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.builder()
+                .error(e.getMessage())
+                .build();
+        return ResponseEntity.status(e.getHttpStatus()).body(errorResponseDTO);
     }
 
 }

@@ -6,16 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//DTO para representar los datos necesarios para crear una tarea
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class TaskRequestDTO {
 
-    @NotBlank(message = "El titulo no debe estar vacio")
+    @NotBlank(message = "El campo titulo no debe estar vacio")
     private String title;
 
-    @NotBlank(message = "La descripcion no debe estar vacia")
+    @NotBlank(message = "El campo descripcion no debe estar vacio")
     private String description;
 
 }

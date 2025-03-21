@@ -5,17 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class TaskResponseDTO {
 
     private String id;
     private String title;
     private String description;
-    private Set<UserSummaryResponseDTO> users;
+    private UserResponseDTO user;
 
 }

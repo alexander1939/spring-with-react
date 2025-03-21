@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class TaskSummaryResponseDTO {
+public class MessageResponseDTO {
 
-    private String id;
-    private String title;
-    private String description;
+    private String message;
 
 }

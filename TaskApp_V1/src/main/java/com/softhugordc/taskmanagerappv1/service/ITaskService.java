@@ -1,7 +1,8 @@
 package com.softhugordc.taskmanagerappv1.service;
 
 import com.softhugordc.taskmanagerappv1.domain.TaskEntity;
-import com.softhugordc.taskmanagerappv1.dto.response.TaskSummaryResponseDTO;
+import com.softhugordc.taskmanagerappv1.dto.request.TaskRequestDTO;
+import com.softhugordc.taskmanagerappv1.dto.response.TaskResponseDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,15 +12,15 @@ public interface ITaskService {
 
     Optional<TaskEntity> findById(String id);
 
-    boolean existsById(String id);
+    List<TaskEntity> findAllByIdUser(String idUser);
 
-    List<TaskEntity> findByIdUser(String idUser);
+    List<TaskResponseDTO> findAllTasksByIdUser(String idUser);
 
-    List<TaskSummaryResponseDTO> findAllTasks();
+    List<TaskEntity> findAll();
 
-    TaskEntity save(TaskEntity taskEntity);
+    TaskEntity save(TaskEntity taskEntity, String idUser);
 
-    TaskSummaryResponseDTO saveTask(TaskEntity taskEntity);
+    TaskResponseDTO save(TaskRequestDTO taskRequestDTO, String idUser);
 
     void deleteTaskById(String id);
 

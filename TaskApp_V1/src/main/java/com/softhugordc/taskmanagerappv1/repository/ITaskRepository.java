@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+//Repositorio para trabajar con TaskEntity
 @Repository
 public interface ITaskRepository extends JpaRepository<TaskEntity, String> {
 
-    @Query("select t from TaskEntity t join t.users u where u.id = :idUser")
-    List<TaskEntity> findByIdUser(@Param("idUser") String idUser);
+    @Query("select t from TaskEntity t join t.user u where u.id = :idUser")
+    List<TaskEntity> findAllByIdUser(@Param("idUser") String idUser);
 
 }

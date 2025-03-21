@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//DTO para representar un mensaje de error
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSummaryResponseDTO {
+public class ErrorResponseDTO {
 
-    private String id;
-    private String name;
-    private String lastName;
-    private String email;
+    private String error;
 
 }
