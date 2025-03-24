@@ -27,10 +27,9 @@ public class AuthenticationConfig {
         return daoAuthenticationProvider;
     }
 
-    //Objeto que administra la autenticacion, trabaja en conjunto con authenticationProvider
+    //Objeto que administra la autenticacion
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

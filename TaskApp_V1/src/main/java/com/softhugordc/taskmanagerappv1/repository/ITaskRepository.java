@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ITaskRepository extends JpaRepository<TaskEntity, String> {
 
-    @Query("select t from TaskEntity t join t.user u where u.id = :idUser")
-    List<TaskEntity> findAllByIdUser(@Param("idUser") String idUser);
+    @Query("select t from TaskEntity t join fetch t.user u where u.id = :idUser")
+    List<TaskEntity> findAllByIdUserWithUser(@Param("idUser") String idUser);
 
 }

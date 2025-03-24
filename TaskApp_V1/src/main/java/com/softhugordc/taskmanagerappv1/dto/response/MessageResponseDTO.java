@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//DTO para representar un mensaje
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

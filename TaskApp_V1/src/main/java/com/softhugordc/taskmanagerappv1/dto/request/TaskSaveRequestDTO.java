@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskRequestDTO {
+public class TaskSaveRequestDTO {
+
+    @NotBlank(message = "El campo id de usuario no debe estar vacio")
+    private String idUser;
 
     @NotBlank(message = "El campo titulo no debe estar vacio")
     private String title;

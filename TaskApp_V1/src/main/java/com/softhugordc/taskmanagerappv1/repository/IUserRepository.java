@@ -14,5 +14,4 @@ public interface IUserRepository extends JpaRepository<UserEntity, String> {
 
     boolean existsByEmail(String email);
 
-    String id(String id);
 }

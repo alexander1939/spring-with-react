@@ -5,16 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//DTO para representar un usuario
+//DTO para representar una tarea sin su usuario
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserResponseDTO {
+public class TaskSummaryResponseDTO {
 
     private String id;
-    private String name;
-    private String lastName;
-    private String email;
+    private String title;
+    private String description;
 
 }

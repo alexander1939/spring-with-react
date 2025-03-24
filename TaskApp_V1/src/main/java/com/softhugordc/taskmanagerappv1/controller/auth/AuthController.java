@@ -2,17 +2,17 @@ package com.softhugordc.taskmanagerappv1.controller.auth;
 
 import com.softhugordc.taskmanagerappv1.dto.request.LoginRequestDTO;
 import com.softhugordc.taskmanagerappv1.dto.request.RegisterRequestDTO;
+import com.softhugordc.taskmanagerappv1.dto.response.MessageResponseDTO;
 import com.softhugordc.taskmanagerappv1.security.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-//Api para autenticación
+//Controlador para autenticación
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -22,8 +22,8 @@ public class AuthController {
 
     //Inicio de sesion
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(authService.authenticate(loginRequestDTO));
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequestDTO loginRequestDTO, HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.authenticate(loginRequestDTO, request, response));
     }
 
     //Registro de usuario
@@ -34,9 +34,12 @@ public class AuthController {
 
     //Cierre de sesion
     @GetMapping("/logout")
-    public ResponseEntity<?> logout() {
-        authService.logout();
-        return ResponseEntity.status(HttpStatus.OK).body("Se ha cerrado tu sesion");
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        authService.logout(request, response);
+        MessageResponseDTO messageResponseDTO = MessageResponseDTO.builder()
+                .message("Se ha cerrado la sesion")
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponseDTO);
     }
 
 }
