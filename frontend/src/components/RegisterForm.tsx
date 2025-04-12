@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useRegister } from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
 
-
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -16,72 +15,99 @@ const RegisterForm = () => {
     const success = await register({ name, lastName, email, password });
 
     if (success) {
-      navigate("/login"); 
+      navigate("/login");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl font-bold mb-4">Registro</h2>
-      <form onSubmit={handleSubmit} className="w-80 p-4 border rounded-lg shadow">
-        <div className="mb-3">
-          <label className="block text-sm font-medium">Nombre</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
+    <div className="font-sans">
+      <div className="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100">
+        <div className="relative sm:max-w-sm w-full">
+          {/* Rotated background cards */}
+          <div className="card bg-blue-400 shadow-lg w-full h-full rounded-3xl absolute transform -rotate-6"></div>
+          <div className="card bg-red-400 shadow-lg w-full h-full rounded-3xl absolute transform rotate-6"></div>
+
+          {/* Main card */}
+          <div className="relative w-full rounded-3xl px-6 py-4 bg-gray-100 shadow-md">
+            <label className="block mt-3 text-sm text-gray-700 text-center font-semibold">
+              Registrate
+            </label>
+
+            <form onSubmit={handleSubmit} className="mt-10">
+              <div>
+                <input
+                  type="text"
+                  placeholder="Nombres"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+                  required
+                />
+              </div>
+
+              <div className="mt-7">
+                <input
+                  type="text"
+                  placeholder="Apellidos"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+                  required
+                />
+              </div>
+
+              <div className="mt-7">
+                <input
+                  type="email"
+                  placeholder="Correo electrónico"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+                  required
+                />
+              </div>
+
+              <div className="mt-7">
+                <input
+                  type="password"
+                  placeholder="Contraseña"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"
+                  required
+                />
+              </div>
+
+              {error && (
+                <p className="text-red-500 text-sm text-center mt-4">{error}</p>
+              )}
+
+              <div className="mt-7">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out transform hover:-translate-x hover:scale-105"
+                >
+                  {loading ? "Registrando..." : "Registrar"}
+                </button>
+              </div>
+
+              <div className="mt-7">
+                <div className="flex justify-center items-center">
+                  <label className="mr-2">¿Ya tienes una cuenta?</label>
+                  <button
+                    type="button"
+                    onClick={() => navigate("/login")}
+                    className="text-blue-500 transition duration-500 ease-in-out transform hover:-translate-x hover:scale-105"
+                  >
+                    Iniciar sesión
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium">Apellido</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div className="mb-3">
-          <label className="block text-sm font-medium">Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        {error && <p className="text-red-500 text-sm">{error}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-green-500 text-white py-2 rounded"
-        >
-          {loading ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
-      <p className="mt-4 text-sm">
-        ¿Ya tienes cuenta?{" "}
-        <button
-          onClick={() => navigate("/login")}
-          className="text-blue-500 underline"
-        >
-          inicia sesion aqui
-        </button>
-      </p>
+      </div>
     </div>
   );
 };
